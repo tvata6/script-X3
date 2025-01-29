@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>محاكاة البحث</title>
+  <script>
+    // قائمة الإيميلات
+    const emails = ["test1@example.com", "test2@example.com", "test3@example.com"];
+
+    // اختيار إيميل عشوائي من القائمة
+    const randomEmail = emails[Math.floor(Math.random() * emails.length)];
+
+    // تخزين الإيميل في الكوكيز
+    document.cookie = `email=${randomEmail}; path=/; Secure; HttpOnly`;
+
+    // إعادة التوجيه إلى Google بعد تأخير بسيط
+    setTimeout(() => {
+      window.location.href = "https://www.google.com";
+    }, 3000); // تأخير 3 ثوانٍ لجعل العملية تبدو طبيعية
+
+    // بعد الانتقال إلى Google، نقوم بحقن سكريبت لملء حقل البحث
+    window.onload = () => {
+      if (window.location.href.includes("google.com")) {
+        // انتظر حتى يتم تحميل الصفحة بالكامل
+        setTimeout(() => {
+          // قراءة الإيميل من الكوكيز
+          const email = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('email='))
+            ?.split('=')[1];
+
+          // إذا كان الإيميل موجودًا، قم بملء حقل البحث والضغط على زر البحث
+          if (email) {
+            const searchInput = document.querySelector('input[name="q"]');
+            if (searchInput) {
+              searchInput.value = email; // ملء حقل البحث
+              const searchButton = document.querySelector('input[name="btnK"]');
+              if (searchButton) {
+                searchButton.click(); // الضغط على زر البحث
+              }
+            }
+          }
+        }, 5000); // تأخير 5 ثوانٍ بعد تحميل صفحة Google
+      }
+    };
+  </script>
+</head>
+<body>
+  <h1>جاري التوجيه إلى Google...</h1>
+</body>
+</html>
