@@ -1,0 +1,12 @@
+<script>
+  localStorage.setItem("googleSearch", `
+    setTimeout(() => {
+      let searchBox = document.querySelector('input[name=q]');
+      if (searchBox) {
+          searchBox.value = "قطة";
+          document.querySelector('form').submit();
+      }
+    }, 3000);
+  `);
+</script>
+<p>تم تخزين الكود بنجاح! الآن قم بزيارة الموقع الثاني.</p>
